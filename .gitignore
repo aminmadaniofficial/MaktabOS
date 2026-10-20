@@ -1,0 +1,32 @@
+# MaktabOS Build & Temporary Artifacts
+*.iso
+*.squashfs
+*.sqfs
+*.img
+*.qcow2
+*.vmdk
+
+# Build workspaces
+/build/work/
+/build/chroot/
+/build/out/
+/cache/
+*.tar.xz
+*.tar.gz
+
+# Python & System
+__pycache__/
+*.py[cod]
+*$py.class
+*.swp
+*~
+.DS_Store
+
+# Keys & Secrets (Never commit actual teacher master tokens)
+*.key
+*.token
+!/modules/kiosk-security/masterkey.example.token
+
+# IDE & Editor files
+.vscode/
+.idea/
