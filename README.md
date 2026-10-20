@@ -131,8 +131,7 @@ MaktabOS treats **32-bit (`i386`) as a first-class target**:
 |  - PCManFM File Manager (Shows This PC, Drive C, Drive D, Recycle Bin)            |
 +-----------------------------------------------------------------------------------+
 |                              EXECUTION DISPATCHER                                 |
-|  - school-exe-runner: Runs native Linux apps or 32-bit WINE with Tahoma fonts     |
-|  - fake-installer: Simulated wizard installer for student textbook practice       |
+|  - school-exe-runner: Real binary runner with WINE and native app integration     |
 |  - offline-store: Instant loop-mounted SquashFS application bundles               |
 +-----------------------------------------------------------------------------------+
 |                            IMMUTABLE STORAGE STACK                                |
@@ -214,7 +213,7 @@ Every part of the MaktabOS interface directly matches the Iranian national schoo
 | Grade Level | Textbook Lesson | What the Textbook Teaches | How MaktabOS Solves It |
 | :--- | :--- | :--- | :--- |
 | **Grade 7 (هفتم)**<br/>Work & Technology | **پودمان کار با رایانه**<br/>(Working with computers) | - Understanding *This PC*, Drive *C:*, Drive *D:*<br/>- Managing folders, Copy/Paste<br/>- Emptying the Recycle Bin | Desktop displays localized icons: *This PC*, *Drive C*, *Drive D (تکالیف)*, and *Recycle Bin*. Linux folders like `/usr` and `/etc` are hidden from students. |
-| **Grade 7 (هفتم)**<br/>Work & Technology | **نصب نرم‌افزار**<br/>(Software Installation) | - Opening setup files<br/>- Clicking *Next > I Agree > Install > Finish* | **Fake Wizard Installer:** A practice tool that looks exactly like standard Windows setup wizards so students can practice without modifying system files. |
+| **Grade 7 (هفتم)**<br/>Work & Technology | **نصب نرم‌افزار**<br/>(Software Installation) | - Opening setup files<br/>- Clicking *Next > I Agree > Install > Finish* | **Real Setup Execution in WINE:** Runs actual Windows `.exe` installers inside a safe, disposable layer so teachers can demonstrate every step with zero risk to the immutable OS. |
 | **Grade 8 (هشتم)**<br/>Work & Technology | **شهروند الکترونیکی**<br/>(Typing and documents) | - Typing Persian documents<br/>- Paragraph formatting, tables, and margins | Fast lightweight office software with **Vazirmatn** font and standard Right-to-Left (RTL) support. |
 | **Grade 9 (نهم)**<br/>Work & Technology | **الگوریتم و پایتون**<br/>(Python programming) | - Writing code in Python IDLE<br/>- Pressing `F5` to run code | Standard Python 3 with **`idle3`** pre-installed. The window matches textbook screenshots pixel-for-pixel. |
 | **Vocational (هنرستان)**<br/>Computer Science | **کارگاه شبکه و سخت‌افزار**<br/>(Networking) | - Connecting computers in a lab<br/>- Sharing assignment files | Automatic ZeroConf local networking allows sending files to all student computers instantly. |
@@ -293,7 +292,6 @@ MaktabOS/
 │   └── skel/                # Student user profile template
 ├── modules/                 # Standalone custom tools
 │   ├── school-exe-runner/   # Intelligent .exe runner & WINE layer
-│   ├── fake-installer/      # Curriculum installer practice tool
 │   ├── offline-store/       # Modular SquashFS app store GUI
 │   ├── kiosk-security/      # Panic scripts, udev rules, and USB sandbox
 │   └── projector-auto/      # VGA safe resolution daemon
@@ -361,7 +359,7 @@ MaktabOS/
 ### ۳. ویژگی‌های اصلی سیستم‌عامل مکتب
 1. **فایل‌سیستم ضد قطع برق (SquashFS + tmpfs):** سیستم‌عامل در یک ایمیج فشرده فقط‌خواندنی قرار دارد و تمامی تغییرات موقت در رم اتفاق می‌افتد. کشیدن کابل برق هیچ آسیبی به فایل‌های سیستم نمی‌زند.
 2. **مصرف رم زیر ۱۰۰ مگابایت:** با مدیریت پنجره Openbox و تسکبار Tint2، سیستم در حالت بیکار کمتر از ۱۰۰ مگابایت رم می‌گیرد و روی سیستم‌های ۵۱۲ مگابایتی کاملاً روان است.
-3. **انطباق ۱۰۰٪ با کتاب درسی:** ظاهر شبیه ویندوز (شامل This PC، درایو C، درایو D تکالیف، سطل آشغال)، مفسر پایتون IDLE 3 دقیقاً مشابه کتاب، و شبیه‌ساز ویزارد نصب (Fake Wizard) برای تمرین مراحل نصب بدون خراب کردن ویندوز.
+3. **انطباق ۱۰۰٪ با کتاب درسی:** ظاهر شبیه ویندوز (شامل This PC، درایو C، درایو D تکالیف، سطل آشغال)، مفسر پایتون IDLE 3 دقیقاً مشابه کتاب، و اجرای واقعی نصاب‌ها داخل WINE بدون تغییر دادن فایل‌های اصلی سیستم.
 4. **اجراکننده هوشمند (`school-exe-runner`):** اجرای نسخه لینوکسی برنامه‌ها در صورت کلیک روی نصاب ویندوزی پایتون/اسکرچ، و اجرای خودکار اتوران‌ها و لوح‌های فشرده مدارس در WINE 32-bit بهینه با فونت فارسی Tahoma.
 5. **امنیت فلش و دکمه نجات ۲ ثانیه‌ای:** ماونت خودکار فلش با فلگ `noexec` برای جلوگیری از اجرای ویروس‌ها، و بازنشانی سریع کل محیط دسکتاپ ظرف ۲ ثانیه با `Ctrl+Alt+Backspace`.
 6. **حل مشکل کابل فرسوده پروژکتور:** اعمال خودکار رزولوشن‌های امن (`1024x768`) بدون نیاز به اطلاعات EDID کابل‌های قطعی‌دار VGA، به همراه ابزار خط‌کشی روی صفحه برای معلم (`F9`).
